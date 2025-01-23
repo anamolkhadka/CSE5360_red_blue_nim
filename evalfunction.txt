@@ -1,0 +1,42 @@
+Depth limited MinMax search
+
+Using Evaluation Function for the non-terminal nodes instead of the utility values of the terminal nodes.
+
+Heuristic Evaluation Function Summary
+This heuristic evaluation function estimates the favorability of a game state for the computer player in both the standard and misère versions of the red-blue nim game. 
+It assigns a score based on whether a balanced or unbalanced configuration of red and blue marbles is beneficial for the current turn’s player, helping simulate the optimal path to avoid a losing state.
+
+Heuristic Formula
+The evaluation function uses the following formula:
+
+def evaluate(red, blue, is_maximizing):
+    if version == 'standard':
+        # If maximizing player, favor balanced configurations (lower values); if minimizing, favor unbalanced.
+        return -abs(red - blue) if is_maximizing else abs(red - blue)
+    else:
+        # Misère version: favor unbalanced configurations for maximizing; balanced for minimizing.
+        return abs(red - blue) if is_maximizing else -abs(red - blue)
+
+Where:
+- red and blue represent the current counts of red and blue marbles.
+- is_maximizing indicates whether it’s the computer’s (maximizing) turn.
+- abs(red - blue) gives the degree of balance or imbalance between the two marble piles.
+
+Strategy for Each Version
+
+Standard Version
+Computer’s Turn (Maximizing Player): A balanced configuration is favorable, as it reduces the risk of the computer ending with a single-color pile, which would result in a loss. 
+
+Human’s Turn (Minimizing Player): An unbalanced configuration is favorable for the human player. The function returns a higher score for unbalanced configurations, as the human 
+can increase the chances that the computer will be forced into a single-color pile in subsequent moves, leading to a loss for the computer.
+
+Misère Version
+Computer’s Turn (Maximizing Player): An unbalanced configuration is favorable, as it increases the likelihood that the computer ending with a single-color pile, which would mean a win for the computer. 
+
+Human’s Turn (Minimizing Player): A balanced configuration is favorable for the human player. The function returns a lower score for unbalanced configurations, as it allows the human to avoid 
+single-color outcomes and prolong the game, thereby decreasing the chance of the computer winning.
+
+Proof:
+- Check the depth-limit-1 and depth-limit-2 screenshots. The eval function is estimating the value of the minMax for the non-terminal node if the node have done the full min max.
+- It does by ranking the nodes in the same way the full-max would have done. 
+- This eval function is always somewhere in between: UTILITY(loss, p) ≤ EVAL(s, p) ≤ UTILITY(win, p), which makes it a good eval function.

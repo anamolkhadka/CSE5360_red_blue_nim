@@ -1,0 +1,66 @@
+Requirements :
+- Two player min max variant call nim.
+- Two versions of the game. Standard and misere.
+- Two piles of marbles (red and blue). On each players turn they pick a pile and remove one or two marbles from it (if possible).
+- If it is your turn and if either pile is empty (only one color left) then you lose in the standard version of the game and win in the misere version.
+- Weight/Amount: Each red marble has 2 points and blue marble has 3 points.
+- For eg: on the computer player turn, it has 0 red and 3 blue marbles, it loses 9 points in the standard version (or wins 9 points in the misere version)
+
+Analysis:
+
+Move Ordering
+For computer player in standard version: 
+- Pick 2 Red marbles
+- Pick 2 Blue marbles
+- Pick 1 Red marble
+- Pick 1 blue marble
+For the misere version, invert that order. 1B, 1R, 2B, 2R
+
+For human player,
+- The program should use a prompt to get the move from the human user and perform the move.
+
+The program should alternate between these turns until the game ends that is when the players run out of either red or blue marbles.
+
+Output
+- Once the game ends, calculate who won and their final score and display it to the user.
+
+Is Maximizing
+The is_maximizing variable in the algorithm indicates whether the current player is aiming to maximize or minimize the evaluation score. 
+When is_maximizing is set to True, it represents the computer's turn, where the goal is to find the move that yields the highest possible score, 
+maximizing its advantage. Conversely, when is_maximizing is set to False, it represents the human's turn, where the aim is to minimize the score, 
+thereby reducing the computer's advantage. This distinction guides the minimax algorithm to either maximize or minimize the evaluation score at 
+each level of the game tree, depending on whose turn it is.
+
+The Computer Player
+- Exploring Possible Moves: The computer considers all legal moves (removing 1 or 2 marbles from either pile).
+- Simulating Alternating Turns: The algorithm recursively simulates moves for both the computer (maximizing player) and the human (minimizing player).
+- Maximizing and Minimizing: The computer aims to maximize the score on its turn, while the human tries to minimize it.
+- Evaluating Terminal States: If a pile is empty, the algorithm checks if it’s the computer's or human's turn to determine the score.
+- Avoiding Losing Moves: Negative scores are assigned if the computer would end up with an empty pile on its turn, guiding it away from these moves.
+- Choosing the Best Move: The computer selects the move with the highest evaluation score, avoiding positions that lead to a losing state.
+- Maintaining Both Piles: The computer prefers moves that keep marbles in both piles to avoid a terminal state.
+
+
+Algorithm Work Flow
+
+Move Ordering Selection: Depending on the game version (standard or misère) and the current player, 
+the computer follows the specific move ordering.For the standard version, it follows the order: 2R, 2B, 1R, 1B.
+
+Traversing the Game Tree with Minimax: The algorithm loops through each possible move (following the move order), 
+simulates the move, and recursively traverses the game tree using the minimax algorithm. It aims to reach terminal 
+nodes where a pile becomes empty and calculates the utility (score) for that terminal state.
+
+Utility Evaluation at Terminal Nodes: When the algorithm reaches a terminal state, it evaluates the score based on 
+the game version and whether it’s the maximizing or minimizing player’s turn. The utility value is returned up the 
+tree to help determine the best move.
+
+Choosing the Best Move: After calculating the utility for each move, the computer selects the move that maximizes its evaluation score. 
+The move ordering helps guide the order in which moves are explored, but the final choice is based on the highest utility found.
+
+Human's Turn: Once the computer makes its move, it becomes the human's turn to make a move. After the human's move, 
+the computer again evaluates the game state based on the updated piles and repeats the process.
+
+Move Ordering as Traversal Strategy: The move order is used to systematically explore potential moves in that specific sequence, 
+but the chosen move is based on the one that yields the highest evaluation, not necessarily the first one in the move order.
+
+Eval Function for Heuristic
